@@ -1,0 +1,17 @@
+.cards{
+    display: flex;
+    align-content: space-around;
+    justify-content: space-between;
+    height: 100%;
+}
+.cover{
+    height: 100% !important;
+}
+.imgicon{
+    height: 10vh;
+    width: 10vh;
+}
+.icon{
+    height: 5vh;
+    width: 5vh;
+}
