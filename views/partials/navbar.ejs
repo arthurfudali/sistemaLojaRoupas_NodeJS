@@ -1,5 +1,5 @@
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         
@@ -11,4 +11,25 @@
         <a class="nav-item nav-link" href="/produtos">Produtos</a>
       </div>
     </div>
+  </nav> -->
+  <nav class="container d-flex flex-column flex-md-row justify-content-between">
+    <a class="py-2" href="/" aria-label="Product">
+      <img src="/imgs/shop.png" class="icon" alt="">
+    </a>
+    <a class="py-2 pt-3 d-none d-md-inline-block"  href="/clientes">Clientes</a>
+    <a class="py-2 pt-3  d-none d-md-inline-block" href="/pedidos">Pedidos</a>
+
+    <div class="nav-item dropdown py-2 d-none d-md-inline-block ">
+      <a class="nav-link dropdown-toggle pt-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Produtos
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="/produtos/camisetas">Camisetas</a></li>
+        <li><a class="dropdown-item" href="/produtos/calcas">Calças</a></li>
+        <li><a class="dropdown-item" href="/produtos/shoes">Tênis</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="/produtos">Ver tudo</a></li>
+      </ul>
+    </div>
+   
   </nav>
