@@ -2,6 +2,7 @@ import express from "express";
 import Produto from "../models/Produto.js";
 import multer from "multer";
 import path from "path";
+import { where } from "sequelize";
 
 const router = express.Router();
 
@@ -34,14 +35,14 @@ router.get("/produtos/:categoria?", (req, res) => {
     });
   }
 });
-router.get("/produtos/new", upload.single("imagem"), (req, res) => {
+router.post("/produtos/new", upload.single("imagem"), (req, res) => {
   const { nome, categoria, preco } = req.body;
   const imagem = req.file ? req.file.filename : null; // Nome do arquivo salvo
   Produto.create({
     nome: nome,
     preco: preco,
     categoria: categoria,
-    imagem: `/public/uploads/${imagem}`,
+    imagem: `/uploads/${imagem}`,
   })
     .then(() => {
       res.redirect("/produtos");
@@ -58,7 +59,32 @@ router.get("/produtos/delete/:id", (req, res)=>{
     console.log(error);
   });
 })
-
+router.get("/produtos/edit/:id", (req,res)=>{
+  const id = req.params.id;
+  Produto.findByPk(id).then((produto)=>{
+    res.render("produtoEdit",{
+      produto:produto
+    })
+  }).catch((error) => {
+      console.log(error);
+    });
+})
+router.post("/produtos/update", upload.single("imagem"), (req,res)=>{
+  
+  const{nome, categoria, preco, id} = req.body;
+  const imagem = req.file ? req.file.filename:null;
+  const produto = Produto.findByPk(id);
+  Produto.update(
+    {
+      nome: nome,
+      categoria: categoria,
+      preco: preco,
+      imagem: imagem ? imagem: produto.imagem
+    }, {where: {id:id}}
+  ).then(()=>{
+    res.redirect("/produtos")
+  })
+});
 /* router.get("/produtos/:categoria?", (req, res) => {
   const categoria = req.params.categoria;
   const camisetas = [

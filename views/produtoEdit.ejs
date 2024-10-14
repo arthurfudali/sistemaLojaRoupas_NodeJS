@@ -1,0 +1,54 @@
+<%- include('partials/head.ejs')%> <%- include('partials/navbar.ejs')%>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1>Editar Produto</h1>
+    </div>
+    <div class="card-body">
+      <form action="/produtos/update" method="post" enctype="multipart/form-data">
+        <label for="">Imagem</label>
+        <input type="file" name="imagem" id="imagem" >
+        <br>
+        <label for="">Nome do produto: </label>
+        <input
+          type="text"
+          name="nome"
+          class="form-control"
+          value="<%= produto.nome%>"
+          required
+        />
+
+        <label for="">Preco</label>
+        <input
+          type="text"
+          name="preco"
+          class="form-control"
+          value="<%= produto.preco%>"
+          required
+          id=""
+        />
+
+        <label for="categoria">Categoria</label>
+        <br>
+        <select name="categoria" id="categoria" >
+          <option value="<%=produto.categoria%>"><%=produto.categoria%></option>
+          <option value="camisetas">Camisetas</option>
+          <option value="calcas">Calças</option>
+          <option value="shoes">Tênis</option>
+        </select>
+        <input type="hidden" name="id" value="<%= produto.id %>" />
+        <br />
+
+        <input
+          type="submit"
+          name=""
+          class="btn btn-warning"
+          value="alterar"
+          id=""
+          onclick="return confirm('Confirma as alterações feitas no produto <%= produto.nome %>? ')"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer.ejs')%>
