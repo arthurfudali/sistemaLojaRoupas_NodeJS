@@ -1,6 +1,65 @@
 import express from "express";
+import Produto from "../models/Produto.js";
+import multer from "multer";
+import path from "path";
+
 const router = express.Router();
+
+// Configuração do Multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/uploads/"); // Pasta onde a imagem será salva
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Nome do arquivo com um timestamp
+  },
+});
+const upload = multer({ storage: storage });
+
 router.get("/produtos/:categoria?", (req, res) => {
+  const categoria = req.params.categoria;
+  if (!categoria) {
+    Produto.findAll().then((produtos) => {
+      res.render("produtos", {
+        produtos: produtos,
+      });
+    });
+  } else {
+    Produto.findAll({
+      where: { categoria: categoria },
+    }).then((produtos) => {
+      res.render("produtos", {
+        produtos: produtos,
+      });
+    });
+  }
+});
+router.get("/produtos/new", upload.single("imagem"), (req, res) => {
+  const { nome, categoria, preco } = req.body;
+  const imagem = req.file ? req.file.filename : null; // Nome do arquivo salvo
+  Produto.create({
+    nome: nome,
+    preco: preco,
+    categoria: categoria,
+    imagem: `/public/uploads/${imagem}`,
+  })
+    .then(() => {
+      res.redirect("/produtos");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+router.get("/produtos/delete/:id", (req, res)=>{
+  const id = req.params.id;
+  Produto.destroy({where: {id:id}}).then(()=>{
+    res.redirect("/produtos")
+  }).catch((error) => {
+    console.log(error);
+  });
+})
+
+/* router.get("/produtos/:categoria?", (req, res) => {
   const categoria = req.params.categoria;
   const camisetas = [
     {
@@ -87,7 +146,7 @@ router.get("/produtos/:categoria?", (req, res) => {
     },
     {
       nomeProduto: "Chuck 70's Shoes",
-      preco: 429.90,
+      preco: 429.9,
       categoria: "Tênis",
       src: "/imgs/chuck.webp",
     },
@@ -97,7 +156,7 @@ router.get("/produtos/:categoria?", (req, res) => {
     camisetas: camisetas,
     calcas: calcas,
     shoes: shoes,
-    produtos: {camisetas, calcas, shoes}
+    produtos: { camisetas, calcas, shoes },
   });
-});
+}); */
 export default router;
