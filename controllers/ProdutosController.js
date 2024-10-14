@@ -2,7 +2,6 @@ import express from "express";
 import Produto from "../models/Produto.js";
 import multer from "multer";
 import path from "path";
-import { where } from "sequelize";
 
 const router = express.Router();
 

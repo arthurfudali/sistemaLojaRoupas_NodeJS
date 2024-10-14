@@ -1,6 +1,59 @@
 import express from "express";
+import Cliente from "../models/Cliente.js";
+
 const router = express.Router();
-router.get("/clientes", (req, res) => {
+router.get("/clientes", (req,res)=>{
+  Cliente.findAll().then((cliente)=>{
+    res.render("clientes",{
+      cliente: cliente
+    })
+  }).catch((error)=>{
+    console.log(error);
+  })
+})
+router.post("/clientes/new", (req,res)=>{
+  const {nome, endereco, cpf} = req.body;
+  Cliente.create({
+    nome: nome,
+    cpf: cpf,
+    endereco: endereco
+  }).then(()=>{
+    res.redirect("/clientes")
+  }).catch((error)=>{
+    console.log(error);
+  })
+})
+router.get("/clientes/delete/:id", (req,res)=>{
+  const id = req.params.id;
+  Cliente.destroy({where: {id:id}}).then(()=>{
+    res.redirect("clientes")
+  }).catch((error)=>{
+    console.log(error);
+  })
+})
+router.get("/clientes/edit/:id", (req,res)=>{
+  const id = req.params.id;
+  Cliente.findByPk(id).then((cliente)=>{
+    res.render("clienteEdit",{
+      cliente:cliente
+    })
+  }).catch((error)=>{
+    console.log(error);
+  })
+})
+router.post("/clientes/update", (req,res)=>{
+  const {id, nome, endereco, cpf} = req.body;
+  Cliente.update({
+    nome:nome,
+    endereco:endereco,
+    cpf:cpf
+  }, {where:{id:id}}).then(()=>{
+    res.redirect("/clientes")
+  }).catch((error)=>{
+    console.log(error);
+  })
+})
+/* router.get("/clientes", (req, res) => {
   const clientes = [
     {
       nome: "Lucas Oliveira",
@@ -56,5 +109,5 @@ router.get("/clientes", (req, res) => {
   res.render("clientes", {
     clientes: clientes,
   });
-});
+}); */
 export default router;
