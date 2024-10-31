@@ -1,12 +1,25 @@
 import express from "express";
 const app = express();
-
+import connection from "./config/sequelize-config.js";
 import ClientesController from "./controllers/ClientesController.js";
 import ProdutosController from "./controllers/ProdutosController.js";
 import PedidosController from "./controllers/PedidosController.js";
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+app.use(express.urlencoded({extended: false}))
+connection.authenticate().then(()=>{
+  console.log("conexao feita com sucesso");
+}).catch((error)=>{
+  console.log(error)
+})
+
+connection.query("CREATE DATABASE IF NOT EXISTS lojaroupa").then(()=>{
+  console.log("banco de dados criado")
+}).catch((error)=>{
+  console.log(error);
+})
+
 
 // Definindo o uso das rotas dos Controllers
 app.use("/", ClientesController);
