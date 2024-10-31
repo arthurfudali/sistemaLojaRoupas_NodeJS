@@ -1,7 +1,8 @@
 import express from "express";
 import Pedido from "../models/Pedido.js";
+import Auth from "../middleware/Auth.js";
 const router = express.Router();
-router.get("/pedidos", (req, res) => {
+router.get("/pedidos",Auth, (req, res) => {
   Pedido.findAll()
     .then((pedido) => {
       res.render("pedidos", {
@@ -12,7 +13,7 @@ router.get("/pedidos", (req, res) => {
       console.log(error);
     });
 });
-router.post("/pedidos/new", (req, res) => {
+router.post("/pedidos/new",Auth, (req, res) => {
   const { numero, valor } = req.body;
   Pedido.create({
     numero: numero,
@@ -25,7 +26,7 @@ router.post("/pedidos/new", (req, res) => {
       console.log(error);
     });
 });
-router.get("/pedidos/delete/:id", (req, res) => {
+router.get("/pedidos/delete/:id",Auth, (req, res) => {
   const id = req.params.id;
   Pedido.destroy({ where: { id: id } })
     .then(() => {
@@ -35,7 +36,7 @@ router.get("/pedidos/delete/:id", (req, res) => {
       console.log(error);
     });
 });
-router.get("/pedidos/edit/:id", (req, res) => {
+router.get("/pedidos/edit/:id",Auth, (req, res) => {
   const id = req.params.id;
   Pedido.findByPk(id)
     .then((pedido) => {
@@ -47,7 +48,7 @@ router.get("/pedidos/edit/:id", (req, res) => {
       console.log(error);
     });
 });
-router.post("/pedidos/update", (req, res) => {
+router.post("/pedidos/update",Auth, (req, res) => {
   const { id, numero, valor } = req.body;
   Pedido.update(
     {

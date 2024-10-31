@@ -2,7 +2,7 @@ import express from "express";
 import Produto from "../models/Produto.js";
 import multer from "multer";
 import path from "path";
-
+import Auth from "../middleware/Auth.js";
 const router = express.Router();
 
 // Configuração do Multer
@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.get("/produtos/:categoria?", (req, res) => {
+router.get("/produtos/:categoria?", Auth,(req, res) => {
   const categoria = req.params.categoria;
   if (!categoria) {
     Produto.findAll().then((produtos) => {
@@ -34,7 +34,7 @@ router.get("/produtos/:categoria?", (req, res) => {
     });
   }
 });
-router.post("/produtos/new", upload.single("imagem"), (req, res) => {
+router.post("/produtos/new",Auth, upload.single("imagem"), (req, res) => {
   const { nome, categoria, preco } = req.body;
   const imagem = req.file ? req.file.filename : null; // Nome do arquivo salvo
   Produto.create({
@@ -50,7 +50,7 @@ router.post("/produtos/new", upload.single("imagem"), (req, res) => {
       console.log(error);
     });
 });
-router.get("/produtos/delete/:id", (req, res)=>{
+router.get("/produtos/delete/:id",Auth, (req, res)=>{
   const id = req.params.id;
   Produto.destroy({where: {id:id}}).then(()=>{
     res.redirect("/produtos")
@@ -58,7 +58,7 @@ router.get("/produtos/delete/:id", (req, res)=>{
     console.log(error);
   });
 })
-router.get("/produtos/edit/:id", (req,res)=>{
+router.get("/produtos/edit/:id", Auth,(req,res)=>{
   const id = req.params.id;
   Produto.findByPk(id).then((produto)=>{
     res.render("produtoEdit",{
@@ -68,7 +68,7 @@ router.get("/produtos/edit/:id", (req,res)=>{
       console.log(error);
     });
 })
-router.post("/produtos/update", upload.single("imagem"), (req,res)=>{
+router.post("/produtos/update",Auth, upload.single("imagem"), (req,res)=>{
   
   const{nome, categoria, preco, id} = req.body;
   const imagem = req.file ? req.file.filename:null;
