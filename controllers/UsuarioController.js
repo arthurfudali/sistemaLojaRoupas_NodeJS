@@ -40,6 +40,7 @@ router.get("/cadastro", (req, res) => {
       }else{ //caso o usuario ja esteja cadastrado
           req.flash('danger', `Usuario já cadastrado. Faça o login!`)
           res.redirect("/cadastro")
+          
       }
     });
   });
