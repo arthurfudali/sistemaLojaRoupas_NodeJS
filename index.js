@@ -40,7 +40,7 @@ app.use("/", ProdutosController);
 app.use("/", PedidosController);
 app.use("/", UsuarioController);
 
-app.get("/", (req, res) => {
+app.get("/", Auth, (req, res) => {
   res.render("index", {
     messages: req.flash()
   });
