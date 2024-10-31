@@ -1,7 +1,7 @@
 import express from "express";
 import Usuario from "../models/Usuario.js";
 import bcrypt from "bcrypt";
-const router = express.router();
+const router = express.Router();
 
 router.get("/login", (req, res) => {
     res.render("login",{
