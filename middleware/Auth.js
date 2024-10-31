@@ -1,5 +1,5 @@
 function Auth(req,res,next){
-    if(req.sessuion.usuario != undefined){
+    if(req.session.usuario != undefined){
         next()
     }else{
         res.render("login", {
