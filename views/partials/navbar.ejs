@@ -30,6 +30,17 @@
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="/produtos">Ver tudo</a></li>
       </ul>
+      <!-- <span style="margin-left:auto;"> -->
+
+          <a class="py-2 pt-3  d-none d-md-inline-block">
+              <% if(typeof loggedOut === "undefined"){ %>
+                  <a href="/logout" class="nav-link"> Fazer Logout </a>
+              <%} else { %>
+                  <a href="/login" class="nav-link"> Fazer Login </a>
+              <%}%>
+              </a>
+<!--   </span> -->
     </div>
+    
    
   </nav>
